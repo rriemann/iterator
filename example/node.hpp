@@ -23,20 +23,20 @@ struct node_base : public std::enable_shared_from_this<node_base>
     }
     */
 
-    node_base* next() const
+    node_ptr next() const
     {
-        return m_next.get();
+        return m_next;
     }
 
     virtual void print(std::ostream& s) const = 0;
     virtual void double_me() = 0;
         
-    void append(node_base* p)
+    void append(node_ptr p)
     {
-        if (m_next.get())
+        if (m_next.get()) // if not a null (empty) pointer
             m_next->append(p);
         else
-            m_next = node_ptr(p);
+            m_next = p;
     }
     
  private:

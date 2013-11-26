@@ -12,6 +12,7 @@ class node_iterator
         node_iterator
       , node_base
       , boost::forward_traversal_tag
+      , node_ptr
     >
 {
  public:
@@ -19,7 +20,7 @@ class node_iterator
       : m_node(0)
     {}
 
-    explicit node_iterator(node_base* p)
+    explicit node_iterator(node_ptr p)
       : m_node(p)
     {}
 
@@ -33,9 +34,9 @@ class node_iterator
     { return this->m_node == other.m_node; }
     
     node_base& dereference() const
-    { return *m_node; }
+    { return *(m_node.get()); } // TODO : or just return *m_node
 
-    node_base* m_node;
+    node_ptr m_node;
 };
 
 

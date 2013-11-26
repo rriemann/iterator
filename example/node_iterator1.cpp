@@ -11,23 +11,23 @@
 
 int main()
 {
-    std::auto_ptr<node<int> > nodes(new node<int>(42));
-    nodes->append(new node<std::string>(" is greater than "));
-    nodes->append(new node<int>(13));
+    std::shared_ptr<node<int> > nodes(new node<int>(42));
+    nodes->append(node_ptr(new node<std::string>(" is greater than ")));
+    nodes->append(node_ptr(new node<int>(13)));
 
     std::copy(
-        node_iterator(nodes.get()), node_iterator()
+        node_iterator(nodes), node_iterator()
       , std::ostream_iterator<node_base>(std::cout, " ")
     );
     std::cout << std::endl;
     
     std::for_each(
-        node_iterator(nodes.get()), node_iterator()
+        node_iterator(nodes), node_iterator()
       , std::mem_fun_ref(&node_base::double_me)
     );
 
     std::copy(
-        node_iterator(nodes.get()), node_iterator()
+        node_iterator(nodes), node_iterator()
       , std::ostream_iterator<node_base>(std::cout, "/")
     );
     std::cout << std::endl;
