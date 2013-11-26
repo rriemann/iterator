@@ -5,21 +5,27 @@
 # define NODE_DWA2004110_HPP
 
 # include <iostream>
+# include <memory>
 
 // Polymorphic list node base class
 
-struct node_base
+struct node_base;
+typedef std::shared_ptr<node_base> node_ptr;
+
+struct node_base : public std::enable_shared_from_this<node_base>
 {
     node_base() : m_next(0) {}
 
+    /*
     virtual ~node_base()
     {
         delete m_next;
     }
+    */
 
     node_base* next() const
     {
-        return m_next;
+        return m_next.get();
     }
 
     virtual void print(std::ostream& s) const = 0;
@@ -27,14 +33,14 @@ struct node_base
         
     void append(node_base* p)
     {
-        if (m_next)
+        if (m_next.get())
             m_next->append(p);
         else
-            m_next = p;
+            m_next = node_ptr(p);
     }
     
  private:
-    node_base* m_next;
+    node_ptr m_next;
 };
 
 inline std::ostream& operator<<(std::ostream& s, node_base const& n)
